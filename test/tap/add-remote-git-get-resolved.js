@@ -60,6 +60,8 @@ test('add-remote-git#get-resolved HTTPS', function (t) {
   verify('https://github.com/foo/repo#master')
   verify('git+https://github.com/foo/repo.git#master')
   verify('git+https://github.com/foo/repo#decadacefadabade')
+  // DEPRECATED
+  verify('git+https://github.com:foo/repo.git#master')
 
   function verify (uri) {
     t.equal(
@@ -83,6 +85,12 @@ test('add-remote-git#get-resolved edge cases', function (t) {
   t.equal(
     getResolved('git+ssh://bananaboat:galbi/blah', 'decadacefadabade'),
     'git+ssh://bananaboat:galbi/blah#decadacefadabade',
+    'don\'t break non-hosted scp-style locations'
+  )
+
+  t.equal(
+    getResolved('git+https://bananaboat:galbi/blah', 'decadacefadabade'),
+    'git+https://bananaboat/galbi/blah#decadacefadabade',
     'don\'t break non-hosted scp-style locations'
   )
 
